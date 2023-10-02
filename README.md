@@ -1,1 +1,3 @@
-# SmartGPT
+# GPTLens
+
+The code will be released around Oct. 15~ Nov. 1 since the author is working on some upcoming deadlines...
