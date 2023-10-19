@@ -1,6 +1,6 @@
 # GPTLens
 
-This is the repo for the code and datasets used in the paper [Large Language Model-Powered Smart Contract Vulnerability Detection: New Perspectives](chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://arxiv.org/pdf/2310.01152.pdf), accepted by the IEEE Trust, Privacy and Security (TPS) conference 2023.
+This is the repo for the code and datasets used in the paper [Large Language Model-Powered Smart Contract Vulnerability Detection: New Perspectives](https://arxiv.org/pdf/2310.01152.pdf), accepted by the IEEE Trust, Privacy and Security (TPS) conference 2023.
 
 If you find this repository useful, please give us a star! Thank you: )
 
