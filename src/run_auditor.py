@@ -50,22 +50,16 @@ def run(args):
 
     openai.api_key = OPENAI_API
 
-    with open("../data/CVE_label/CVE2description.json", "r") as f:
-        CVE2description = json.load(f)
-    with open("../data/CVE_label/CVE2label.json", "r") as f:
-        CVE2label = json.load(f)
-
     # log output file
     log_dir = f"./logs/auditor_{args.backend}_{args.temperature}_top{args.topk}_{args.num_auditor}"
 
-    for CVE_index, label in CVE2label.items():
+    for file_name in os.listdir(args.data_dir):
+        if not file_name.endswith(".sol"):
+            continue
 
-        all_bug_info_list = []
-        description = CVE2description[CVE_index]
-        file_name = "-".join(CVE_index.split("-")[1:]) + ".sol"
-
-        with open("../data/CVE_clean/" + file_name, "r") as f:
+        with open(os.path.join(args.data_dir, file_name), "r") as f:
             code = f.read()
+
         # remove space
         code = remove_spaces(code)
 
@@ -73,14 +67,15 @@ def run(args):
         bug_info_list = solve(args, code)
 
         if len(bug_info_list) == 0: #Sometimes the query fails because the model does not strictly follow the format
-            print("{index} failed".format(index=CVE_index))
+            print("{index} failed".format(index=file_name))
             continue
 
+        all_bug_info_list = []
         for info in bug_info_list:
-            info.update({"file_name": file_name, "label": label, "description": description})
+            info.update({"file_name": file_name})
             all_bug_info_list.append(info)
 
-        file = os.path.join(log_dir, CVE_index+".json")
+        file = os.path.join(log_dir, file_name)
         os.makedirs(os.path.dirname(file), exist_ok=True)
 
         with open(file, 'w') as f:
@@ -90,7 +85,7 @@ def parse_args():
     args = argparse.ArgumentParser()
     args.add_argument('--backend', type=str, choices=['gpt-3.5-turbo','gpt-4'], default='gpt-4')
     args.add_argument('--temperature', type=float, default=0.7)
-    args.add_argument('--dataset', type=str, default="CVE")
+    args.add_argument('--data_dir', type=str, default="../data/CVE_clean")
     args.add_argument('--topk', type=int, default=3) # the topk per each auditor
     args.add_argument('--num_auditor', type=int, default=1)
 

@@ -12,18 +12,29 @@ Get GPT-4 API from https://platform.openai.com/account/api-keys
 
 Replace OPENAI_API = "Enter your openai API key" in src/model.py (line 4) with your API key.
 
+### Step 1: Preprocess your own dataset
+
+Add your dataset to the directory "GPTLens/data/xx"
+
+remove the comments, empty lines and whitespace:
+
+```sh
+python pre_process.py --data_dir="../data/CVE" # replace CVE with your onw dataset
+```
+
 ### Step 1: Run Auditor
 
 ```sh
-python run_auditor.py --backend=gpt-4 --temperature=0.7 --topk=3 --num_auditor=1
+python run_auditor.py --backend=gpt-4 --temperature=0.7 --topk=3 --num_auditor=1 --data_dir="../data/CVE_clean"
 ```
 
-| Parameter       | Description                                                     |
-|-----------------|-----------------------------------------------------------------|
-| `backend`       | The version of GPT                                              |
-| `temperature`   | The hyper-parameter that controls the randomness of generation. |
-| `topk`          | Identify k vulnerabilities per each auditor                     |
-| `num_auditor`   | The total number of independent auditors.                       |
+| Parameter      | Description                                                     |
+|----------------|-----------------------------------------------------------------|
+| `backend`      | The version of GPT                                              |
+| `temperature`  | The hyper-parameter that controls the randomness of generation. |
+| `topk`         | Identify k vulnerabilities per each auditor                     |
+| `num_auditor`  | The total number of independent auditors.                       |
+| `data_dir`     | The directory for storing preprocessed smart contracts.         |
 
 
 ### Step 2: Run Critic
