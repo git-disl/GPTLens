@@ -22,7 +22,7 @@ remove the comments, empty lines and whitespace:
 python pre_process.py --data_dir="../data/CVE" # replace CVE with your onw dataset
 ```
 
-### Step 1: Run Auditor
+### Step 2: Run Auditor
 
 ```sh
 python run_auditor.py --backend=gpt-4 --temperature=0.7 --topk=3 --num_auditor=1 --data_dir="../data/CVE_clean"
@@ -37,7 +37,7 @@ python run_auditor.py --backend=gpt-4 --temperature=0.7 --topk=3 --num_auditor=1
 | `data_dir`     | The directory for storing preprocessed smart contracts.         |
 
 
-### Step 2: Run Critic
+### Step 3: Run Critic
 
 ```sh
 python run_critic.py --backend=gpt-4 --temperature=0 --auditor_dir="auditor_gpt-4_0.7_top3_1" --num_critic=1 
@@ -50,7 +50,7 @@ python run_critic.py --backend=gpt-4 --temperature=0 --auditor_dir="auditor_gpt-
 | `num_critic`   | The total number of independent critics.                        |
 
 
-### Step 3: Run Ranker
+### Step 4: Run Ranker
 
 ```sh
 python run_ranker.py --auditor_dir="auditor_gpt-4_0.7_top3_1" --critic_dir="critic_gpt-4_0_1" --strategy="default"
