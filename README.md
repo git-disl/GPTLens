@@ -4,6 +4,11 @@ This is the repo for the code and datasets used in the paper [Large Language Mod
 
 If you find this repository useful, please give us a star! Thank you: )
 
+If you wish to run your own dataset, please switch to the "release" branch:
+```sh
+git checkout release
+```
+
 ## Getting Start
 
 ### Step 0: Set up your GPT-4 API
