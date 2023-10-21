@@ -90,7 +90,7 @@ def parse_args():
     args = argparse.ArgumentParser()
     args.add_argument('--backend', type=str, choices=['gpt-3.5-turbo','gpt-4'], default='gpt-4')
     args.add_argument('--temperature', type=float, default=0.7)
-    args.add_argument('--dataset', type=str, choices=['CVE'], default="CVE")
+    args.add_argument('--dataset', type=str, default="CVE")
     args.add_argument('--topk', type=int, default=3) # the topk per each auditor
     args.add_argument('--num_auditor', type=int, default=1)
 
