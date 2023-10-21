@@ -39,12 +39,10 @@ def critic_response_parse(critic_outputs):
 def run(args):
 
     openai.api_key = OPENAI_API
-    critic_dir = os.path.join("logs", args.auditor_dir, f"critic_tmp")
+    critic_dir = os.path.join("logs", args.auditor_dir, args.critic_dir)
 
     for filename in os.listdir(os.path.join("logs", args.auditor_dir)):
         if not filename.endswith("json"):
-            continue
-        if filename != "CVE-2018-12025.json":
             continue
         filepath = os.path.join("logs", args.auditor_dir, filename)
         with open(filepath, "r") as f:
