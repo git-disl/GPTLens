@@ -26,24 +26,28 @@ auditor_format_constrain = '''\nYou should only output in below json format:
 '''
 
 ####### Critic Prompt #######
-critic_zero_shot_prompt = '''Below vulnerabilities and reasoning are likely contain mistakes. As a harsh vulnerability critic, your duty is to scrutinize the function and evaluate the correctness, severity and profitability of given vulnerabilities and associated reasoning with corresponding scores ranging from 0 (lowest) to 9 (highest). Your also need to provide criticism, which must include explanations for your scoring. Make your criticism comprehensive and detailed\n'''
+critic_zero_shot_prompt = '''Below vulnerabilities and reasoning are likely contain mistakes. As a harsh vulnerability critic, your duty is to scrutinize the function and evaluate the correctness, severity and profitability of given vulnerabilities and explanation with corresponding scores ranging from 0 (lowest) to 9 (highest). Consider severity from the perspective of contract users and profitability from the perspective of an external attacker. Make your criticism and explanation comprehensive and detailed\n'''
 critic_format_constrain = '''\nYou should only output in below json format:
 {
     "output_list": [
         {
             "function_name": "<function_name_1>",
             "vulnerability": "<short_vulnera_desc_1>",
-            "criticism": "<criticism for reasoning and explanation for scoring>",
+            "criticism_correctness": "<criticism for vulnerability and reasoning>",
             "correctness": <0~9>,
+            "explain_severity": "<explanation for severity for contract users>"
             "severity": <0~9>,
+            "explain_profitability": "<explanation for profitability for external attackers (not owner)>"
             "profitability": <0~9>,
         },
         {
             "function_name": "<function_name_2>",
             "vulnerability": "<short_vulnera_desc_2>",
-            "criticism": "<criticism for reasoning and explanation for scoring>",
+            "criticism_correctness": "<criticism for vulnerability and reasoning>",
             "correctness": <0~9>,
+            "explain_severity": "<explanation for severity for contract users>"
             "severity": <0~9>,
+            "explain_profitability": "<explanation for profitability for external attackers (not owner)>"
             "profitability": <0~9>,
         }
     ]

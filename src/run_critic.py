@@ -90,7 +90,7 @@ def parse_args():
     args.add_argument('--backend', type=str, choices=['gpt-3.5-turbo','gpt-4'], default='gpt-4')
     args.add_argument('--temperature', type=float, default=0)
     args.add_argument('--dataset', type=str, choices=['CVE'], default="CVE")
-    args.add_argument('--auditor_dir', type=str, default="auditor_gpt-4_0.7_top3_1") #The auditor output directory
+    args.add_argument('--auditor_dir', type=str, default="auditor_gpt-4_0.8_top3_2") #The auditor output directory
     args.add_argument('--num_critic', type=int, default=1)
     args.add_argument('--shot', type=str, choices=["zero", "few"], default="zero")
 
