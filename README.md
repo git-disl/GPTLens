@@ -56,8 +56,9 @@ python run_ranker.py --auditor_dir="auditor_gpt-4_0.7_top3_1" --critic_dir="crit
 | `strategy`    | The strategy for generating the final score.    |
 
 
-Note: We observe that the output from auditors can drift largely between different runs due to randomness. We upload a set of results that we obtained on September 28 using GPT-4 with 1 auditor, 1 critic and 3 outputs per each contract (see src/logs).
+Note: We observe that the output from auditors can drift largely between different runs at different time period. We upload a set of results that we obtained on September 28 using GPT-4 with 1 auditor, 1 critic and 3 outputs per each contract (see src/logs).
 The composite score less than 5 can be deemed as not being a vulnerability. 
+
 
 -----
 ## Citation
