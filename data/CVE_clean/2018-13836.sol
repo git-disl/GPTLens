@@ -58,6 +58,8 @@ contract RocketCoin {
         }
         return true;
     }
+
+
     function transferFrom(address _from, address _to, uint256 _amount) public returns (bool success) {
         require(balances[_from] >= _amount && allowed[_from][msg.sender] >= _amount && _amount > 0);
         balances[_from] -= _amount;
