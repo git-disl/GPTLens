@@ -5,7 +5,7 @@ topk_prompt2 = '''If no vulnerability is detected, you should only output in thi
 
 
 ####### Auditor Prompt #######
-auditor_prompt = '''You are a smart contract auditor, identify and explain severe vulnerabilities in the provided smart contract. Make sure that they are exploitable in real world and beneficial to attackers. Provide each identified vulnerability with intermediate reasoning and its associated function. Remember, you must provide the entire function code and do not use "...". Smart contract code:\n\n'''
+auditor_prompt = '''You are a smart contract auditor, identify and explain severe vulnerabilities in the provided smart contract. Make sure that they are exploitable in real world and beneficial to attackers. Provide each identified vulnerability with intermediate reasoning and its associated function. Remember, you must provide the entire function code and do not use "...". Make your reasoning comprehensive and detailed. Smart contract code:\n\n'''
 auditor_format_constrain = '''\nYou should only output in below json format:
 {
     "output_list": [
@@ -26,7 +26,7 @@ auditor_format_constrain = '''\nYou should only output in below json format:
 '''
 
 ####### Critic Prompt #######
-critic_zero_shot_prompt = '''Below vulnerabilities and reasoning might contain mistakes. As a harsh vulnerability critic, your duty is to scrutinize the function and evaluate the correctness, severity and profitability of given vulnerabilities and associated reasoning with corresponding scores ranging from 0 (lowest) to 9 (highest). Your also need to provide criticism, which must include explanations for your scoring. \n'''
+critic_zero_shot_prompt = '''Below vulnerabilities and reasoning are likely contain mistakes. As a harsh vulnerability critic, your duty is to scrutinize the function and evaluate the correctness, severity and profitability of given vulnerabilities and associated reasoning with corresponding scores ranging from 0 (lowest) to 9 (highest). Your also need to provide criticism, which must include explanations for your scoring. Make your criticism comprehensive and detailed\n'''
 critic_format_constrain = '''\nYou should only output in below json format:
 {
     "output_list": [

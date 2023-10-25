@@ -92,7 +92,7 @@ def parse_args():
     args.add_argument('--temperature', type=float, default=0.7)
     args.add_argument('--dataset', type=str, default="CVE")
     args.add_argument('--topk', type=int, default=3) # the topk per each auditor
-    args.add_argument('--num_auditor', type=int, default=1)
+    args.add_argument('--num_auditor', type=int, default=2)
 
     args = args.parse_args()
     return args
