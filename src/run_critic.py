@@ -39,7 +39,7 @@ def critic_response_parse(critic_outputs):
 def run(args):
 
     openai.api_key = OPENAI_API
-    critic_dir = os.path.join("logs", args.auditor_dir, args.critic_dir)
+    critic_dir = os.path.join("logs", args.auditor_dir, f"critic_{args.backend}_{args.temperature}_{args.num_critic}")
 
     for filename in os.listdir(os.path.join("logs", args.auditor_dir)):
         if not filename.endswith("json"):
