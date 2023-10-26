@@ -3,7 +3,7 @@ import argparse
 import os
 import openai
 
-from prompts import critic_zero_shot_prompt, critic_format_constrain
+from prompts import critic_zero_shot_prompt, critic_few_shot_prompt, critic_format_constrain
 from model import gpt, OPENAI_API
 
 completion_tokens = 0
@@ -59,7 +59,14 @@ def run(args):
             vul_info_str = vul_info_str + "function_name: " + function_name + "\n" + "code: " + function_code + "\n" + "vulnerability" + ": " + vulnerability + "\n" + "reason: " + reason + "\n------------------\n"
 
         # do wrap
-        critic_input = critic_zero_shot_prompt + vul_info_str + critic_format_constrain  # notice this is zero shot prompt
+        if args.shot == "zero":
+            critic_prompt = critic_zero_shot_prompt
+        elif args.shot == "few":
+            critic_prompt = critic_few_shot_prompt  # provide three examples to make scoring consistent
+        else:
+            raise Exception("Please specify zero or few shots..")
+        
+        critic_input = critic_prompt + vul_info_str + critic_format_constrain  # notice this is zero shot prompt
         critic_outputs = gpt(critic_input, model=args.backend, temperature=args.temperature, n=args.num_critic)
         critic_bug_info_list = critic_response_parse(critic_outputs)
 
@@ -92,7 +99,7 @@ def parse_args():
     args.add_argument('--dataset', type=str, choices=['CVE'], default="CVE")
     args.add_argument('--auditor_dir', type=str, default="auditor_gpt-4_0.8_top3_2") #The auditor output directory
     args.add_argument('--num_critic', type=int, default=1)
-    args.add_argument('--shot', type=str, choices=["zero", "few"], default="zero")
+    args.add_argument('--shot', type=str, choices=["zero", "few"], default="few")
 
     args = args.parse_args()
 
