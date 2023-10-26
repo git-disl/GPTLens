@@ -83,6 +83,7 @@ The composite score less than 5 can be deemed as not being a vulnerability.
 **10/26**: We observed that the output of critic can also be different (-.-) at different time periods, even with the same input and the temperature set to 0 (deterministic generation). This might be caused by the update of GPT-4 (?). To make scoring consistent, we added few shot examples for critic prompt. 
 We uploaded a set of results of the critic with few-shot prompt that obtained on Oct. 26 using GPT-4 (see src/logs/critic_gpt-4_0_1_few_1026).
 
+This repo will be continuously updated to make generation more consistent and robust.
 
 -----
 ## Citation
