@@ -60,7 +60,7 @@ python run_ranker.py --auditor_dir="auditor_gpt-4_0.7_top3_1" --critic_dir="crit
 
 Some updates: 
 
-**09/28**: We observe that the outputs of auditors can drift largely at different time periods. 
+**09/28**: We observed that the outputs of auditors can drift largely at different time periods. 
 For instance, GPT-4 could easily identify the vulnerability in the CVE-2018-19830.sol at Sep. 16 but had difficulty detecting it at Sep. 28.
 ```sh
     {
@@ -80,8 +80,8 @@ For instance, GPT-4 could easily identify the vulnerability in the CVE-2018-1983
 We uploaded a set of results that we obtained on Sep. 28 using GPT-4 with 1 auditor, 1 critic and 3 outputs per each contract (see src/logs). 
 The composite score less than 5 can be deemed as not being a vulnerability.
 
-**10/26**: We observe that the output of critic can also be different (-.-) at different time periods, even with the same input and the temperature set to 0 (deterministic generation). This might be caused by the update of GPT-4 (?). To make scoring consistent, we add few shot examples for critic prompt. 
-We uploaded a set of results of critics with few-shot prompt that obtained on Nov. 26 using GPT-4 with 1 auditor, 1 critic and 3 outputs per each contract (see src/logs/critic_gpt-4_0_1_few_1026).
+**10/26**: We observed that the output of critic can also be different (-.-) at different time periods, even with the same input and the temperature set to 0 (deterministic generation). This might be caused by the update of GPT-4 (?). To make scoring consistent, we added few shot examples for critic prompt. 
+We uploaded a set of results of critics with few-shot prompt that obtained on Nov. 26 using GPT-4 (see src/logs/critic_gpt-4_0_1_few_1026).
 
 
 -----
