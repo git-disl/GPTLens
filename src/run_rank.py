@@ -50,7 +50,7 @@ def parse_args():
     args = argparse.ArgumentParser()
     args.add_argument('--dataset', type=str, choices=['CVE'], default="CVE")
     args.add_argument('--auditor_dir', type=str, default="auditor_gpt-4_0.7_top3_1") #The auditor output directory
-    args.add_argument('--critic_dir', type=str, default="critic_gpt-4_0_1") #The critic output directory
+    args.add_argument('--critic_dir', type=str, default="critic_gpt-4_0_1_few_1026") #The critic output directory
     args.add_argument('--strategy', type=str, default="default", choices=["default", "customize"])
 
     args = args.parse_args()

@@ -9,7 +9,7 @@ def gpt(prompt, model, temperature=0.7, max_tokens=4000, n=1, stop=None) -> list
     messages = [{"role": "user", "content": prompt}]
     if model == "gpt-4":
         pass
-        # time.sleep(50)
+        time.sleep(30) # to prevent speed limitation exception
     return chatgpt(messages, model=model, temperature=temperature, max_tokens=max_tokens, n=n, stop=stop)
 
 
