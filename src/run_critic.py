@@ -2,6 +2,7 @@ import json
 import argparse
 import os
 import openai
+from tqdm import tqdm
 
 from prompts import critic_zero_shot_prompt, critic_few_shot_prompt, critic_format_constrain
 from model import gpt, OPENAI_API
@@ -24,7 +25,7 @@ def run(args):
     openai.api_key = OPENAI_API
     critic_dir = os.path.join("logs", args.auditor_dir, f"critic_{args.backend}_{args.temperature}_{args.num_critic}_{args.shot}")
 
-    for filename in os.listdir(os.path.join("logs", args.auditor_dir)):
+    for filename in tqdm(os.listdir(os.path.join("logs", args.auditor_dir))):
         if not filename.endswith("json"):
             continue
         # if filename not in ("CVE-2018-10666.json"):
@@ -82,7 +83,7 @@ def run(args):
 
 def parse_args():
     args = argparse.ArgumentParser()
-    args.add_argument('--backend', type=str, choices=['gpt-3.5-turbo','gpt-4'], default='gpt-4')
+    args.add_argument('--backend', type=str, choices=['gpt-3.5-turbo','gpt-4', 'gpt-4-turbo-preview'], default='gpt-4')
     args.add_argument('--temperature', type=float, default=0)
     args.add_argument('--dataset', type=str, choices=['CVE'], default="CVE")
     args.add_argument('--auditor_dir', type=str, default="auditor_gpt-4_0.7_top3_1") #The auditor output directory

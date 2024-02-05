@@ -17,6 +17,8 @@ Get GPT-4 API from https://platform.openai.com/account/api-keys
 
 Replace OPENAI_API = "Enter your openai API key" in src/model.py (line 4) with your API key.
 
+Set up Python environment by importing environment.yml as a Conda env.
+
 ### Step 1: Run Auditor
 
 ```sh
@@ -47,7 +49,7 @@ python run_critic.py --backend=gpt-4 --temperature=0 --auditor_dir="auditor_gpt-
 ### Step 3: Run Ranker
 
 ```sh
-python run_ranker.py --auditor_dir="auditor_gpt-4_0.7_top3_1" --critic_dir="critic_gpt-4_0_1" --strategy="default"
+python run_rank.py --auditor_dir="auditor_gpt-4_0.7_top3_1" --critic_dir="critic_gpt-4_0_1_few" --strategy="default"
 ```
 | Parameter     | Description                                     |
 |---------------|-------------------------------------------------|

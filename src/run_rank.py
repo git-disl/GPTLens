@@ -1,6 +1,7 @@
 import json
 import argparse
 import os
+from tqdm import tqdm
 
 def rank_by_score(json_list):
     return sorted(json_list, key=lambda x: x["final_score"], reverse=True)
@@ -9,7 +10,7 @@ def run(args):
     # output file
     ranker_dir = f"ranker_{args.strategy}"
 
-    for filename in os.listdir(os.path.join("logs", args.auditor_dir, args.critic_dir)):
+    for filename in tqdm(os.listdir(os.path.join("logs", args.auditor_dir, args.critic_dir))):
         if not filename.endswith("json"):
             continue
         filepath = os.path.join("logs",  args.auditor_dir, args.critic_dir, filename)

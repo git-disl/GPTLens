@@ -1,7 +1,8 @@
 import time
 import openai
+import os
 
-OPENAI_API = "Enter your openai API key"
+OPENAI_API = os.environ.get('OPENAI_API') #"Enter your openai API key"
 completion_tokens = 0
 prompt_tokens = 0
 
@@ -32,6 +33,8 @@ def gpt_usage(backend="gpt-4"):
     global completion_tokens, prompt_tokens
     if backend == "gpt-4":
         cost = completion_tokens / 1000 * 0.06 + prompt_tokens / 1000 * 0.03
+    elif backend == "gpt-4-turbo-preview":
+        cost = completion_tokens / 1000 * 0.03 + prompt_tokens / 1000 * 0.01
     elif backend == "gpt-3.5-turbo":
         cost = completion_tokens / 1000 * 0.002 + prompt_tokens / 1000 * 0.0015
     return {"completion_tokens": completion_tokens, "prompt_tokens": prompt_tokens, "cost": cost}
