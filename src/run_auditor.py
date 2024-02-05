@@ -2,6 +2,7 @@ import json
 import random
 import argparse
 import os
+from tqdm import tqdm
 
 import openai
 from model import gpt, gpt_usage, OPENAI_API
@@ -21,7 +22,9 @@ def auditor_response_parse(auditor_outputs):
     output_list = []
     for auditor_output in auditor_outputs:
         try:
-            data = json.loads(auditor_output)
+            start_idx = auditor_output.find("{")
+            end_idx = auditor_output.rfind("}")
+            data = json.loads(auditor_output[start_idx: end_idx+1])
         except:
             print("parsing json fail.")
             continue
@@ -58,7 +61,7 @@ def run(args):
     # log output file
     log_dir = f"./logs/auditor_{args.backend}_{args.temperature}_top{args.topk}_{args.num_auditor}"
 
-    for CVE_index, label in CVE2label.items():
+    for CVE_index, label in tqdm(CVE2label.items()):
 
         all_bug_info_list = []
         description = CVE2description[CVE_index]
@@ -88,7 +91,7 @@ def run(args):
 
 def parse_args():
     args = argparse.ArgumentParser()
-    args.add_argument('--backend', type=str, choices=['gpt-3.5-turbo','gpt-4'], default='gpt-4')
+    args.add_argument('--backend', type=str, choices=['gpt-3.5-turbo','gpt-4', 'gpt-4-turbo-preview'], default='gpt-4')
     args.add_argument('--temperature', type=float, default=0.7)
     args.add_argument('--dataset', type=str, default="CVE")
     args.add_argument('--topk', type=int, default=5) # the topk per each auditor
