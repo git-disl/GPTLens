@@ -20,7 +20,7 @@ def chatgpt(messages, model, temperature, max_tokens, n, stop) -> list:
     while n > 0:
         cnt = min(n, 20)
         n -= cnt
-        res = openai.ChatCompletion.create(model=model, messages=messages, temperature=temperature, max_tokens=max_tokens,
+        res = openai.chat.completions.create(model=model, messages=messages, temperature=temperature, max_tokens=max_tokens,
                                            n=cnt, stop=stop)
         outputs.extend([choice["message"]["content"] for choice in res["choices"]])
         # log completion tokens
