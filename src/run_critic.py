@@ -28,8 +28,6 @@ def run(args):
     for filename in tqdm(os.listdir(os.path.join("logs", args.auditor_dir))):
         if not filename.endswith("json"):
             continue
-        # if filename not in ("CVE-2018-10666.json"):
-        #     continue
         filepath = os.path.join("logs", args.auditor_dir, filename)
         with open(filepath, "r") as f:
             auditor_output_list = json.load(f)
