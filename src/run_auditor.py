@@ -3,6 +3,8 @@ import random
 import argparse
 import os
 from tqdm import tqdm
+from utils import dotdict
+from stqdm import stqdm
 
 import openai
 from model import gpt, gpt_usage, OPENAI_API
@@ -53,21 +55,21 @@ def run(args):
 
     openai.api_key = OPENAI_API
 
-    with open("../data/CVE_label/CVE2description.json", "r") as f:
+    with open("data/CVE_label/CVE2description.json", "r") as f:
         CVE2description = json.load(f)
-    with open("../data/CVE_label/CVE2label.json", "r") as f:
+    with open("data/CVE_label/CVE2label.json", "r") as f:
         CVE2label = json.load(f)
 
     # log output file
-    log_dir = f"./logs/auditor_{args.backend}_{args.temperature}_top{args.topk}_{args.num_auditor}"
+    log_dir = f"./src/logs/auditor_{args.backend}_{args.temperature}_top{args.topk}_{args.num_auditor}"
 
-    for CVE_index, label in tqdm(CVE2label.items()):
+    for CVE_index, label in stqdm(CVE2label.items()):
 
         all_bug_info_list = []
         description = CVE2description[CVE_index]
         file_name = "-".join(CVE_index.split("-")[1:]) + ".sol"
 
-        with open("../data/CVE_clean/" + file_name, "r") as f:
+        with open("data/CVE_clean/" + file_name, "r") as f:
             code = f.read()
         # remove space
         code = remove_spaces(code)
@@ -91,7 +93,7 @@ def run(args):
 
 def parse_args():
     args = argparse.ArgumentParser()
-    args.add_argument('--backend', type=str, choices=['gpt-3.5-turbo','gpt-4', 'gpt-4-turbo-preview'], default='gpt-4')
+    args.add_argument('--backend', type=str, choices=['gpt-3.5-turbo','gpt-4', 'gpt-4-turbo-preview'], default='gpt-4-turbo-preview')
     args.add_argument('--temperature', type=float, default=0.7)
     args.add_argument('--dataset', type=str, default="CVE")
     args.add_argument('--topk', type=int, default=5) # the topk per each auditor
@@ -103,5 +105,10 @@ def parse_args():
 if __name__ == '__main__':
 
     args = parse_args()
+    print(args)
+    run(args)
+
+def mainfnc(args=dotdict):
+    # args = parse_args()
     print(args)
     run(args)
