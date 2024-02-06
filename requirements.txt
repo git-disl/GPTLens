@@ -5,5 +5,5 @@ openai==1.11.1
 streamlit==1.31.0
 tqdm==4.66.1
 STqdm
-pyautogui
-python-xlib
+# pyautogui
+# python-xlib

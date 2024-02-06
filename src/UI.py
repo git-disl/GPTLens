@@ -6,7 +6,7 @@ import run_critic
 import run_rank
 import shutil
 from utils import dotdict, clean_folder
-import pyautogui
+# import pyautogui
 
 os.environ['DISPLAY'] = ':0'
 
@@ -229,4 +229,5 @@ with open("results.zip", "rb") as fp:
     )
 
 if st.button("Reset"):
-    pyautogui.hotkey("ctrl","F5")
+    # pyautogui.hotkey("ctrl","F5")
+    st.empty()
