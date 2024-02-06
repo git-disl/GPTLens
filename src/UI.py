@@ -6,7 +6,6 @@ import run_critic
 import run_rank
 import shutil
 from utils import dotdict, clean_folder
-# import pyautogui
 from streamlit_js_eval import streamlit_js_eval
 
 os.environ['DISPLAY'] = ':0'
@@ -34,6 +33,8 @@ if "visibility" not in st.session_state:
 
 st.header("Auditor Step", divider=True)
 st.divider()
+
+os.environ["OPENAI_API_KEY"] = openai_api_key
 
 col1, col2 = st.columns(2)
 
@@ -153,8 +154,6 @@ with col2:
         index=1
     )
 
-os.environ["OPENAI_API_KEY"] = openai_api_key
-
 start_critics = st.button("Start Critics")
 
 if start_critics:
@@ -233,6 +232,4 @@ with open("results.zip", "rb") as fp:
     )
 
 if st.button("Reset"):
-    # pyautogui.hotkey("ctrl","F5")
-    # st.empty()
     streamlit_js_eval(js_expressions="parent.window.location.reload()")
