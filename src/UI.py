@@ -34,8 +34,6 @@ if "visibility" not in st.session_state:
 st.header("Auditor Step", divider=True)
 st.divider()
 
-os.environ["OPENAI_API_KEY"] = openai_api_key
-
 col1, col2 = st.columns(2)
 
 with col1:
@@ -80,12 +78,14 @@ start_auditors = st.button("Start Auditors")
 
 if start_auditors:
     if uploaded_file:
+        os.environ["OPENAI_API_KEY"] = openai_api_key
         args_dict = {
             'backend': model,
             'temperature': temperature,
             'dataset': "CVE",
             'topk': topk,
-            'num_auditor': num_auditors
+            'num_auditor': num_auditors,
+            'openai_api_key': openai_api_key
         }
         args = dotdict(args_dict)
         if os.path.exists("data"):
@@ -164,7 +164,8 @@ if start_critics:
         'dataset': "CVE",
         'auditor_dir': auditor_dir_c,
         'num_critic': num_critic_c,
-        'shot': shot_c
+        'shot': shot_c,
+        'openai_api_key': openai_api_key
     }
     args_c = dotdict(args_c_dict)
 

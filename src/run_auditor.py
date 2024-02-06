@@ -53,7 +53,10 @@ def solve(args, code):
 
 def run(args):
 
-    openai.api_key = OPENAI_API_KEY
+    if args.get('openai_api_key') is None:
+        openai.api_key = OPENAI_API_KEY
+    else:
+        openai.api_key = args.openai_api_key
 
     with open("data/CVE_label/CVE2description.json", "r") as f:
         CVE2description = json.load(f)

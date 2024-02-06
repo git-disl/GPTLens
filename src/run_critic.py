@@ -24,7 +24,10 @@ def critic_response_parse(critic_outputs):
 
 def run(args):
 
-    openai.api_key = OPENAI_API_KEY
+    if args.get('openai_api_key') is None:
+        openai.api_key = OPENAI_API_KEY
+    else:
+        openai.api_key = args.openai_api_key
     critic_dir = os.path.join("src/logs", args.auditor_dir, f"critic_{args.backend}_{args.temperature}_{args.num_critic}_{args.shot}")
 
     for filename in stqdm(os.listdir(os.path.join("src/logs", args.auditor_dir))):
