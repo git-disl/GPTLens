@@ -16,6 +16,10 @@ with st.sidebar:
     "[Get an OpenAI API key](https://platform.openai.com/account/api-keys)"
     "[View the source code](https://github.com/streamlit/llm-examples/blob/main/Chatbot.py)"
     "[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/streamlit/llm-examples?quickstart=1)"
+    st.divider()
+    if st.button("Reset App"):
+        streamlit_js_eval(js_expressions="parent.window.location.reload()")
+
 
 st.title("💬 GPTLens")
 st.caption("🚀 Smart Contract Vulnerability Detection powered by OpenAI LLM")
@@ -208,8 +212,6 @@ if st.session_state.section_active_critic:
     critic_button = st.button("Start Critics", key="critic", on_click=start_critic)
 
     if critic_button and st.session_state.start_critic:
-        print ("Entered")
-        st.write(f"Entered!")
         args_c_dict = {
             'backend': model_c,
             'temperature': temperature_c,
@@ -296,6 +298,3 @@ if st.session_state.section_active_ranking:
             file_name="results.zip",
             mime="application/zip"
         )
-
-    if st.button("Reset"):
-        streamlit_js_eval(js_expressions="parent.window.location.reload()")
