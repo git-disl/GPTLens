@@ -31,6 +31,15 @@ if "visibility" not in st.session_state:
     st.session_state.visibility = "visible"
     st.session_state.disabled = False
 
+if "start_critic" not in st.session_state:
+    st.session_state.start_critic = False
+
+if "start_auditor" not in st.session_state:
+    st.session_state.start_auditor = False
+
+if "start_ranking" not in st.session_state:
+    st.session_state.start_ranking = False
+
 st.header("Auditor Step", divider=True)
 st.divider()
 
@@ -74,9 +83,12 @@ with col2:
         format="%d"
     )
 
-start_auditors = st.button("Start Auditors")
+def start_auditor():
+    st.session_state.start_auditor = True
 
-if start_auditors:
+st.button("Start Auditor", key="auditor", on_click=start_auditor)
+
+if st.session_state.start_auditor:
     if uploaded_file:
         os.environ["OPENAI_API_KEY"] = openai_api_key
         args_dict = {
@@ -96,7 +108,7 @@ if start_auditors:
             bin_file.write(uploaded_file.read())
         with zipfile.ZipFile("data.zip", 'r') as zip_ref:
             zip_ref.extractall()
-        st.write(f"Starting auditor code!")
+        st.write("Starting auditor code!")
         run_auditor.mainfnc(args)
         st.write(f"Audit files processed successfully to folder ./src/logs/auditor_{args.backend}_{args.temperature}_top{args.topk}_{args.num_auditor}!")
     else:
@@ -155,9 +167,15 @@ with col2:
     )
 
 os.environ["OPENAI_API_KEY"] = openai_api_key
-start_critics = st.button("Start Critics")
 
-if start_critics:
+def start_critic():
+    st.session_state.start_critic = True
+
+st.button("Start Critics", key="critic", on_click=start_critic)
+
+if st.session_state.start_critic:
+    print ("Entered")
+    st.write(f"Entered!")
     args_c_dict = {
         'backend': model_c,
         'temperature': temperature_c,
@@ -168,14 +186,11 @@ if start_critics:
         'openai_api_key': openai_api_key
     }
     args_c = dotdict(args_c_dict)
-
-    st.write(f"Starting critic code!")
+    st.write("Starting critic code!")
     run_critic.mainfnc(args_c)
     st.write(f"Critic files processed successfully to folder ./src/logs/{args_c.auditor_dir}/critic_{args_c.backend}_{args_c.temperature}_{args_c.num_critic}_{args_c.shot}!")
 else:
     st.stop()
-
-
 
 
 
@@ -206,9 +221,12 @@ with col2:
         index=0
     )
 
-start_ranking = st.button("Start Ranking")
+def start_ranking():
+    st.session_state.start_ranking = True
 
-if start_ranking:
+st.button("Start Ranking", key="ranking", on_click=start_ranking)
+
+if st.session_state.start_ranking:
     args_r_dict = {
         'auditor_dir': auditor_dir_r,
         'critic_dir': critic_dir_r,
