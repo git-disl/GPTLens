@@ -7,7 +7,7 @@ from utils import dotdict
 from stqdm import stqdm
 
 import openai
-from model import gpt, gpt_usage, OPENAI_API
+from model import gpt, gpt_usage, OPENAI_API_KEY
 from prompts import auditor_prompt, auditor_format_constrain
 from prompts import topk_prompt1, topk_prompt2
 
@@ -53,7 +53,7 @@ def solve(args, code):
 
 def run(args):
 
-    openai.api_key = OPENAI_API
+    openai.api_key = OPENAI_API_KEY
 
     with open("data/CVE_label/CVE2description.json", "r") as f:
         CVE2description = json.load(f)

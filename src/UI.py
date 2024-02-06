@@ -23,7 +23,7 @@ if not openai_api_key:
     st.warning("Please add your OpenAI API key to continue.")
     st.stop()
 else:
-    os.environ["OPENAI_API"] = openai_api_key
+    os.environ["OPENAI_API_KEY"] = openai_api_key
 
 
 # Store the initial value of widgets in session state
@@ -152,7 +152,7 @@ with col2:
         index=1
     )
 
-os.environ["OPENAI_API"] = openai_api_key
+os.environ["OPENAI_API_KEY"] = openai_api_key
 
 start_critics = st.button("Start Critics")
 

@@ -15,7 +15,7 @@ git checkout release
 
 Get GPT-4 API from https://platform.openai.com/account/api-keys
 
-Replace OPENAI_API = "Enter your openai API key" in src/model.py (line 4) with your API key.
+Replace OPENAI_API_KEY = "Enter your openai API key" in src/model.py (line 4) with your API key.
 
 Set up Python environment by importing environment.yml as a Conda env.
 

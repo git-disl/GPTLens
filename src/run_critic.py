@@ -7,7 +7,7 @@ from utils import dotdict
 
 
 from prompts import critic_zero_shot_prompt, critic_few_shot_prompt, critic_format_constrain
-from model import gpt, OPENAI_API
+from model import gpt, OPENAI_API_KEY
 
 completion_tokens = 0
 prompt_tokens = 0
@@ -24,7 +24,7 @@ def critic_response_parse(critic_outputs):
 
 def run(args):
 
-    openai.api_key = OPENAI_API
+    openai.api_key = OPENAI_API_KEY
     critic_dir = os.path.join("src/logs", args.auditor_dir, f"critic_{args.backend}_{args.temperature}_{args.num_critic}_{args.shot}")
 
     for filename in stqdm(os.listdir(os.path.join("src/logs", args.auditor_dir))):

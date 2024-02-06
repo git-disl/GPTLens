@@ -4,7 +4,7 @@ import os
 from utils import dotdict
 
 
-OPENAI_API = os.environ.get('OPENAI_API') #"Enter your openai API key"
+OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY') #"Enter your openai API key"
 completion_tokens = 0
 prompt_tokens = 0
 
