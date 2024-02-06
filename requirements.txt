@@ -7,3 +7,4 @@ tqdm==4.66.1
 STqdm
 # pyautogui
 # python-xlib
+streamlit_js_eval

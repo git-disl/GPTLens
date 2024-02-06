@@ -7,6 +7,7 @@ import run_rank
 import shutil
 from utils import dotdict, clean_folder
 # import pyautogui
+from streamlit_js_eval import streamlit_js_eval
 
 os.environ['DISPLAY'] = ':0'
 
@@ -233,4 +234,5 @@ with open("results.zip", "rb") as fp:
 
 if st.button("Reset"):
     # pyautogui.hotkey("ctrl","F5")
-    st.empty()
+    # st.empty()
+    streamlit_js_eval(js_expressions="parent.window.location.reload()")
