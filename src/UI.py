@@ -154,6 +154,7 @@ with col2:
         index=1
     )
 
+os.environ["OPENAI_API_KEY"] = openai_api_key
 start_critics = st.button("Start Critics")
 
 if start_critics:
