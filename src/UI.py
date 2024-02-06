@@ -25,6 +25,7 @@ if not openai_api_key:
 else:
     os.environ["OPENAI_API"] = openai_api_key
 
+
 # Store the initial value of widgets in session state
 if "visibility" not in st.session_state:
     st.session_state.visibility = "visible"
@@ -150,6 +151,8 @@ with col2:
         options=["one", "few"],
         index=1
     )
+
+os.environ["OPENAI_API"] = openai_api_key
 
 start_critics = st.button("Start Critics")
 
