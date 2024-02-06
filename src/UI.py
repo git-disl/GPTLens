@@ -22,8 +22,8 @@ st.caption("🚀 Smart Contract Vulnerability Detection powered by OpenAI LLM")
 if not openai_api_key:
     st.warning("Please add your OpenAI API key to continue.")
     st.stop()
-
-os.environ["OPENAI_API"] = openai_api_key
+else:
+    os.environ["OPENAI_API"] = openai_api_key
 
 # Store the initial value of widgets in session state
 if "visibility" not in st.session_state:
