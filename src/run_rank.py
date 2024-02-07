@@ -12,10 +12,10 @@ def run(args):
     # output file
     ranker_dir = f"ranker_{args.strategy}"
 
-    for filename in stqdm(os.listdir(os.path.join("src/logs", args.auditor_dir, args.critic_dir))):
+    for filename in stqdm(os.listdir(f"src/logs/{args.auditor_dir}/{args.critic_dir}")):
         if not filename.endswith("json"):
             continue
-        filepath = os.path.join("src/logs",  args.auditor_dir, args.critic_dir, filename)
+        filepath = f"src/logs/{args.auditor_dir}/{args.critic_dir}/{filename}"
         with open(filepath, "r") as f:
             critic_output_list = json.load(f)
 
@@ -40,7 +40,7 @@ def run(args):
 
         # Rank based on scores
         ranker_output_list = rank_by_score(critic_output_list)
-        filepath = os.path.join("src/logs", args.auditor_dir, args.critic_dir, ranker_dir, filename)
+        filepath = f"src/logs/{args.auditor_dir}/{args.critic_dir}/{ranker_dir}/{filename}"
         # dump the file
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
 

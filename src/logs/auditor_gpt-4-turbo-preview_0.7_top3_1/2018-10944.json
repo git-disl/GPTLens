@@ -1,0 +1,23 @@
+[
+    {
+        "function_name": "transferFrom",
+        "code": "function transferFrom( address _from, address _to, uint256 _amount ) returns (bool success) { if (balances[_from] >= _amount && allowed[_from][msg.sender] >= _amount && _amount > 0 && balances[_to] + _amount > balances[_to]) { balances[_from] -= _amount; allowed[_from][msg.sender] -= _amount; balances[_to] += _amount; Transfer(_from, _to, _amount); return true; } else { return false; } }",
+        "vulnerability": "Reentrancy",
+        "reason": "The 'transferFrom' function transfers tokens on behalf of another address after allowance is given, but does not implement reentrancy guards. This could allow an attacker to perform a reentrancy attack if the recipient contract is malicious and has a fallback function designed to call back into this contract.",
+        "file_name": "2018-10944.sol"
+    },
+    {
+        "function_name": "request_dividend",
+        "code": "function request_dividend(address token_holder) payable { holder_token_balance = balanceOf(token_holder)/10000000000; Message(holder_token_balance); holder_profit = holder_token_balance * profit_per_token; Message(holder_profit); Transfer(owner, token_holder , (holder_profit/10**18)); token_holder.send(holder_profit); }",
+        "vulnerability": "Reentrancy",
+        "reason": "In the 'request_dividend' function, ether is sent using 'send' without a reentrancy guard. This could allow an attacker to re-enter the contract if the caller is a contract with a fallback function.",
+        "file_name": "2018-10944.sol"
+    },
+    {
+        "function_name": "drain",
+        "code": "function drain() onlyOwner { if (!owner.send(this.balance)) throw; }",
+        "vulnerability": "Unchecked CALL return value",
+        "reason": "The 'drain' function uses '.send()' to transfer ether and checks the return value with a 'throw', which is deprecated and should be replaced with 'require()' for better error handling. It's also susceptible to gas limitations of '.send()', potentially leading to failed transactions without proper notification or handling.",
+        "file_name": "2018-10944.sol"
+    }
+]

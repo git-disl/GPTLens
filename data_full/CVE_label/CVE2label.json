@@ -1,0 +1,21 @@
+{
+  "CVE-2018-10299": "Integer Overflow",
+  "CVE-2018-10376": "Integer Overflow",
+  "CVE-2018-11335": "Integer Overflow",
+  "CVE-2018-13836": "Integer Overflow",
+  "CVE-2018-17882": "Integer Overflow",
+  "CVE-2018-10468": "Wrong Logic",
+  "CVE-2018-11411": "Wrong Logic",
+  "CVE-2018-12025": "Wrong Logic",
+  "CVE-2021-3004": "Wrong Logic",
+  "CVE-2018-15552": "Bad Randomness",
+  "CVE-2018-14715": "Bad Randomness",
+  "CVE-2018-17877": "Bad Randomness",
+  "CVE-2018-10666": "Access Control",
+  "CVE-2018-10705": "Access Control",
+  "CVE-2018-19830": "Access Control",
+  "CVE-2019-15078": "Typo Constructor",
+  "CVE-2019-15079": "Typo Constructor",
+  "CVE-2019-15080": "Typo Constructor",
+  "CVE-2018-18425": "Token Devalue"
+}

@@ -1,0 +1,38 @@
+[
+    {
+        "function_name": "_transfer",
+        "vulnerability": "Integer Overflow and Underflow",
+        "criticism": "The criticism regarding the potential for integer overflow and underflow in the _transfer function is valid, especially for Solidity versions prior to 0.8.0 which do not automatically handle these issues. The function's arithmetic operations without explicit checks for overflows or underflows could indeed lead to vulnerabilities where token balances are manipulated in unintended ways. This could potentially allow an attacker to exploit the contract by creating conditions under which these arithmetic errors occur, leading to the theft of tokens or other unintended outcomes. The severity of this vulnerability is high due to the potential impact on token balances and the integrity of the contract. Profitability for an attacker is also high, as exploiting these vulnerabilities could lead to significant gains at the expense of other users.",
+        "correctness": 8,
+        "severity": 7,
+        "profitability": 7,
+        "reason": "The function does not adequately check for integer overflows or underflows when calculating balances after a transfer and burn operation. Solidity versions prior to 0.8.0 do not automatically check for arithmetic overflows/underflows. An attacker might exploit this by sending a value that, when added to the recipient's balance, overflows the balance, potentially allowing for theft of tokens.",
+        "code": "function _transfer(address _from, address _to, uint _value) internal { require (_to != 0x0); require (balanceOf[_from] >= _value + burnPerTransaction); require (balanceOf[_to] + _value > balanceOf[_to]); balanceOf[_from] -= _value + burnPerTransaction; balanceOf[_to] += _value; balanceOf[0x0] += burnPerTransaction; currentSupply -= burnPerTransaction; Burn(_from, burnPerTransaction); Transfer(_from, _to, _value); }",
+        "file_name": "2018-11239.sol",
+        "final_score": 7.5
+    },
+    {
+        "function_name": "approve",
+        "vulnerability": "ERC20 Approve/Allowance Race Condition",
+        "criticism": "The criticism of the approve function's vulnerability to a race condition is somewhat overstated. The function's requirement that either the current allowance is zero or the new value is zero mitigates the risk of an attacker exploiting the race condition to a significant extent. However, the scenario described does indeed represent a potential vulnerability in cases where allowances are being changed from one non-zero value to another without first setting them to zero. This could lead to unexpected behavior if not properly managed by the user or the interface interacting with the contract. The correctness of identifying a vulnerability is there, but the severity is overestimated due to the mitigating conditions in the code. Profitability for an attacker is also limited, as it requires specific conditions and timing to exploit successfully.",
+        "correctness": 6,
+        "severity": 3,
+        "profitability": 2,
+        "reason": "This vulnerability occurs because the function does not handle the case where changing an allowance from a non-zero value to another non-zero value could be exploited by an attacker who is able to call transferFrom multiple times. The require condition only checks for changes from zero to non-zero or vice versa, which means an attacker can exploit the race condition by requesting a change in allowance while executing transferFrom, potentially draining the owner's funds.",
+        "code": "function approve(address _spender, uint256 _value) public returns (bool success) { require(_value == 0 || allowance[msg.sender][_spender] == 0); allowance[msg.sender][_spender] = _value; Approval(msg.sender, _spender, _value); return true; }",
+        "file_name": "2018-11239.sol",
+        "final_score": 4.25
+    },
+    {
+        "function_name": "burn",
+        "vulnerability": "Burning Tokens to 0x0 Address",
+        "criticism": "The criticism of burning tokens by sending them to the 0x0 address overlooks the intentional design choice behind such a mechanism. While it is true that burning tokens in this manner permanently removes them from circulation, thereby reducing the total supply, this is often a desired outcome in token economics to create scarcity or to fulfill specific tokenomics models. The criticism fails to acknowledge the potential benefits of such a design decision. However, caution should indeed be exercised to avoid burning tokens unintentionally. The practice of burning tokens is not inherently problematic but requires clear documentation and user understanding to prevent mistakes. The severity of this issue is low, as it aligns with the intended functionality, and profitability for an attacker is non-existent, as this action does not inherently provide a means for profit.",
+        "correctness": 5,
+        "severity": 1,
+        "profitability": 0,
+        "reason": "Directly burning tokens by sending them to the 0x0 address can lead to a permanent loss of those tokens, decreasing the total supply potentially in an undesirable manner. While this is somewhat intentional as described by the function, it can be problematic if there's a mistake in the amount to be burned. It also does not follow the best practice of burning tokens, which is to reduce the total supply without transferring to the 0x0 address.",
+        "code": "function burn(uint256 _value) public returns (bool success) { require(balanceOf[msg.sender] >= _value); balanceOf[msg.sender] -= _value; balanceOf[0x0] += _value; currentSupply -= _value; Burn(msg.sender, _value); return true; }",
+        "file_name": "2018-11239.sol",
+        "final_score": 2.75
+    }
+]

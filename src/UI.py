@@ -1,11 +1,12 @@
 import streamlit as st
 import os
 import zipfile
-import run_auditor
-import run_critic
+import run_auditor_user_defined
+import run_critic_user_defined
 import run_rank
 import shutil
 import time
+import pre_process
 from utils import dotdict, clean_folder
 from streamlit_js_eval import streamlit_js_eval
 
@@ -79,7 +80,7 @@ if st.session_state.section_active_auditor:
             index=2
         )
         
-        uploaded_file = st.file_uploader('Upload data folder as a zip')
+        uploaded_files = st.file_uploader('Upload smart contract files', accept_multiple_files=True, type=['sol'])
 
     with col2:
         topk =  st.number_input(
@@ -109,6 +110,8 @@ if st.session_state.section_active_auditor:
             format="%d"
         )
 
+        uploaded_prompt = st.file_uploader('Upload prompt file (optional)', accept_multiple_files=False, type=['py'])
+
     def start_auditor():
         st.session_state.start_auditor = True
     def end_auditor():
@@ -117,28 +120,36 @@ if st.session_state.section_active_auditor:
     audit_button = st.button("Start Auditor", key="auditor", on_click=start_auditor)
 
     if audit_button and st.session_state.start_auditor:
-        if uploaded_file:
+        if uploaded_files:
             os.environ["OPENAI_API_KEY"] = openai_api_key
             args_dict = {
                 'backend': model,
                 'temperature': temperature,
-                'dataset': "CVE",
+                'data_dir': "data/CVE_clean",
                 'topk': topk,
                 'num_auditor': num_auditors,
                 'openai_api_key': openai_api_key
             }
             args = dotdict(args_dict)
             st.session_state.args = args
-            if os.path.exists("data"):
-                clean_folder("data")
+            if os.path.exists("data/CVE"):
+                clean_folder("data/CVE")
+            if os.path.exists("data/CVE_clean"):
+                clean_folder("data/CVE_clean")
             if os.path.exists(f"src/logs/auditor_{args.backend}_{args.temperature}_top{args.topk}_{args.num_auditor}"):
                 clean_folder(f"src/logs/auditor_{args.backend}_{args.temperature}_top{args.topk}_{args.num_auditor}")
-            with open("data.zip", 'wb') as bin_file:
-                bin_file.write(uploaded_file.read())
-            with zipfile.ZipFile("data.zip", 'r') as zip_ref:
-                zip_ref.extractall()
+            for uploaded_file in uploaded_files:
+                name = uploaded_file.name
+                bytes_data = uploaded_file.read()
+                with open(f"data/CVE/{name}", "wb") as f:
+                    f.write(bytes_data)
+            pre_process.mainfnc(args.data_dir)
+            if uploaded_prompt:
+                bytes_data = uploaded_prompt.read()
+                with open(f"src/prompt.py", "wb") as f:
+                    f.write(bytes_data)
             st.write("Starting auditor code!")
-            run_auditor.mainfnc(args)
+            run_auditor_user_defined.mainfnc(args)
             st.write(f"Audit files processed successfully to folder ./src/logs/auditor_{args.backend}_{args.temperature}_top{args.topk}_{args.num_auditor}!")
             end_auditor()
             time.sleep(2)
@@ -224,7 +235,7 @@ if st.session_state.section_active_critic:
         args_c = dotdict(args_c_dict)
         st.session_state.args_c = args_c
         st.write("Starting critic code!")
-        run_critic.mainfnc(args_c)
+        run_critic_user_defined.mainfnc(args_c)
         st.write(f"Critic files processed successfully to folder ./src/logs/{args_c.auditor_dir}/critic_{args_c.backend}_{args_c.temperature}_{args_c.num_critic}_{args_c.shot}!")
         end_critic()
         time.sleep(2)

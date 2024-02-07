@@ -9,7 +9,7 @@ class dotdict(dict):
 
 def clean_folder(folder):
     for filename in os.listdir(folder):
-        file_path = os.path.join(folder, filename)
+        file_path = f"{folder}/{filename}"
         try:
             if os.path.isfile(file_path) or os.path.islink(file_path):
                 os.unlink(file_path)
