@@ -79,8 +79,6 @@ def run(args):
         with open(filepath, 'w') as f:
             json.dump(critic_bug_info_final_list, f, indent=4)
 
-    print("Done")
-
 
 def parse_args():
     args = argparse.ArgumentParser()

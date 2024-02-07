@@ -81,8 +81,6 @@ def run(args):
         with open(filepath, 'w') as f:
             json.dump(critic_bug_info_final_list, f, indent=4)
 
-    print("Done")
-
 
 def parse_args():
     args = argparse.ArgumentParser()
@@ -106,5 +104,5 @@ if __name__ == '__main__':
 
 def mainfnc(args=dotdict):
     # args = parse_args()
-    print(args)
+    # print(args)
     run(args)

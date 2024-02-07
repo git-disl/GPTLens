@@ -109,5 +109,5 @@ if __name__ == '__main__':
 
 def mainfnc(args=dotdict):
     # args = parse_args()
-    print(args)
+    # print(args)
     run(args)
