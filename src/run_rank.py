@@ -1,7 +1,9 @@
 import json
 import argparse
 import os
-from tqdm import tqdm
+from stqdm import stqdm
+from utils import dotdict
+
 
 def rank_by_score(json_list):
     return sorted(json_list, key=lambda x: x["final_score"], reverse=True)
@@ -10,10 +12,10 @@ def run(args):
     # output file
     ranker_dir = f"ranker_{args.strategy}"
 
-    for filename in tqdm(os.listdir(os.path.join("logs", args.auditor_dir, args.critic_dir))):
+    for filename in stqdm(os.listdir(f"src/logs/{args.auditor_dir}/{args.critic_dir}")):
         if not filename.endswith("json"):
             continue
-        filepath = os.path.join("logs",  args.auditor_dir, args.critic_dir, filename)
+        filepath = f"src/logs/{args.auditor_dir}/{args.critic_dir}/{filename}"
         with open(filepath, "r") as f:
             critic_output_list = json.load(f)
 
@@ -38,7 +40,7 @@ def run(args):
 
         # Rank based on scores
         ranker_output_list = rank_by_score(critic_output_list)
-        filepath = os.path.join("logs", args.auditor_dir, args.critic_dir, ranker_dir, filename)
+        filepath = f"src/logs/{args.auditor_dir}/{args.critic_dir}/{ranker_dir}/{filename}"
         # dump the file
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
 
@@ -60,4 +62,10 @@ def parse_args():
 if __name__ == '__main__':
     args = parse_args()
     print(args)
+    run(args)
+
+
+def mainfnc(args=dotdict):
+    # args = parse_args()
+    # print(args)
     run(args)

@@ -1,0 +1,23 @@
+[
+    {
+        "function_name": "approveAndCall",
+        "code": "function approveAndCall(address _spender, uint256 _amount, bytes _extraData) public returns (bool success) { require(approve(_spender, _amount)); ApproveAndCallReceiver(_spender).receiveApproval( msg.sender, _amount, this, _extraData ); return true; }",
+        "vulnerability": "Reentrancy",
+        "reason": "This function approves tokens for a spender and then calls an external contract (ApproveAndCallReceiver). If the external contract is malicious, it can call back into this contract and exploit its state before the initial operation is complete, potentially leading to unexpected behavior or loss of funds.",
+        "file_name": "2018-10706.sol"
+    },
+    {
+        "function_name": "transferFrom",
+        "code": "function transferFrom(address _from, address _to, uint256 _value) realUser(_from) realUser(_to) moreThanZero(_value) public returns (bool success) { require(balanceOf[_from] >= _value); require(balanceOf[_to] + _value > balanceOf[_to]); require(_value <= allowance[_from][msg.sender]); balanceOf[_from] = balanceOf[_from] - _value; balanceOf[_to] = balanceOf[_to] + _value; allowance[_from][msg.sender] = allowance[_from][msg.sender] + _value; emit Transfer(_from, _to, _value); return true; }",
+        "vulnerability": "Integer Overflow",
+        "reason": "The line 'allowance[_from][msg.sender] = allowance[_from][msg.sender] + _value;' can potentially overflow if '_value' is chosen such that the sum exceeds the maximum representable uint256 value. This could allow an attacker to wrap the allowance around and exploit the contract by transferring more tokens than intended.",
+        "file_name": "2018-10706.sol"
+    },
+    {
+        "function_name": "generateTokens",
+        "code": "function generateTokens(address _user, uint _amount) onlyController public returns (bool) { _amount=_amount*10**uint256(decimals); return _generateTokens(_user,_amount); }",
+        "vulnerability": "Unchecked Math",
+        "reason": "The function multiplies '_amount' by '10**uint256(decimals)' without checking for overflow. In Solidity versions before 0.8.0, arithmetic operations do not automatically check for overflows. If '_amount' is large enough, this multiplication could overflow, allowing an attacker to mint an arbitrary number of tokens.",
+        "file_name": "2018-10706.sol"
+    }
+]

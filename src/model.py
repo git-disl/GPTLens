@@ -1,8 +1,10 @@
 import time
 import openai
 import os
+from utils import dotdict
 
-OPENAI_API = os.environ.get('OPENAI_API') #"Enter your openai API key"
+
+OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY') #"Enter your openai API key"
 completion_tokens = 0
 prompt_tokens = 0
 
@@ -22,10 +24,10 @@ def chatgpt(messages, model, temperature, max_tokens, n, stop) -> list:
         n -= cnt
         res = openai.chat.completions.create(model=model, messages=messages, temperature=temperature, max_tokens=max_tokens,
                                            n=cnt, stop=stop)
-        outputs.extend([choice["message"]["content"] for choice in res["choices"]])
+        outputs.extend([choice.message.content for choice in res.choices])
         # log completion tokens
-        completion_tokens += res["usage"]["completion_tokens"]
-        prompt_tokens += res["usage"]["prompt_tokens"]
+        completion_tokens += res.usage.completion_tokens
+        prompt_tokens += res.usage.prompt_tokens
     return outputs
 
 

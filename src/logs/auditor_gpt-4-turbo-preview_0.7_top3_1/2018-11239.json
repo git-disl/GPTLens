@@ -1,0 +1,23 @@
+[
+    {
+        "function_name": "approve",
+        "code": "function approve(address _spender, uint256 _value) public returns (bool success) { require(_value == 0 || allowance[msg.sender][_spender] == 0); allowance[msg.sender][_spender] = _value; Approval(msg.sender, _spender, _value); return true; }",
+        "vulnerability": "ERC20 Approve/Allowance Race Condition",
+        "reason": "This vulnerability occurs because the function does not handle the case where changing an allowance from a non-zero value to another non-zero value could be exploited by an attacker who is able to call transferFrom multiple times. The require condition only checks for changes from zero to non-zero or vice versa, which means an attacker can exploit the race condition by requesting a change in allowance while executing transferFrom, potentially draining the owner's funds.",
+        "file_name": "2018-11239.sol"
+    },
+    {
+        "function_name": "_transfer",
+        "code": "function _transfer(address _from, address _to, uint _value) internal { require (_to != 0x0); require (balanceOf[_from] >= _value + burnPerTransaction); require (balanceOf[_to] + _value > balanceOf[_to]); balanceOf[_from] -= _value + burnPerTransaction; balanceOf[_to] += _value; balanceOf[0x0] += burnPerTransaction; currentSupply -= burnPerTransaction; Burn(_from, burnPerTransaction); Transfer(_from, _to, _value); }",
+        "vulnerability": "Integer Overflow and Underflow",
+        "reason": "The function does not adequately check for integer overflows or underflows when calculating balances after a transfer and burn operation. Solidity versions prior to 0.8.0 do not automatically check for arithmetic overflows/underflows. An attacker might exploit this by sending a value that, when added to the recipient's balance, overflows the balance, potentially allowing for theft of tokens.",
+        "file_name": "2018-11239.sol"
+    },
+    {
+        "function_name": "burn",
+        "code": "function burn(uint256 _value) public returns (bool success) { require(balanceOf[msg.sender] >= _value); balanceOf[msg.sender] -= _value; balanceOf[0x0] += _value; currentSupply -= _value; Burn(msg.sender, _value); return true; }",
+        "vulnerability": "Burning Tokens to 0x0 Address",
+        "reason": "Directly burning tokens by sending them to the 0x0 address can lead to a permanent loss of those tokens, decreasing the total supply potentially in an undesirable manner. While this is somewhat intentional as described by the function, it can be problematic if there's a mistake in the amount to be burned. It also does not follow the best practice of burning tokens, which is to reduce the total supply without transferring to the 0x0 address.",
+        "file_name": "2018-11239.sol"
+    }
+]

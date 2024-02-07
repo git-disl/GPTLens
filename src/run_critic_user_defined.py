@@ -62,15 +62,13 @@ def run(args):
 
         for i in range(len(critic_bug_info_list)):
             function_name = auditor_output_list[i]["function_name"]
-            label = auditor_output_list[i]["label"]
             code = auditor_output_list[i]["code"]
             file_name = auditor_output_list[i]["file_name"]
-            description = auditor_output_list[i]["description"]
             reason = auditor_output_list[i]["reason"]
 
             critic_bug_info = critic_bug_info_list[i]
             critic_bug_info.update(
-                {"reason": reason, "code": code, "label": label, "file_name": file_name, "description": description})
+                {"reason": reason, "code": code, "file_name": file_name})
 
             critic_bug_info_final_list.append(critic_bug_info)
 

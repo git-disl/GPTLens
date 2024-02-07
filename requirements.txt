@@ -1,0 +1,10 @@
+# This file may be used to create an environment using:
+# $ conda create --name <env> --file <this file>
+# platform: win-64
+openai==1.11.1
+streamlit==1.31.0
+tqdm==4.66.1
+STqdm
+# pyautogui
+# python-xlib
+streamlit_js_eval

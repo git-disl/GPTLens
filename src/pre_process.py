@@ -1,9 +1,11 @@
 import os
 import re
+from utils import dotdict
+
 
 def remove_annotations(file_path):
     # read the file
-    with open(file_path, 'r') as f:
+    with open(file_path, 'r', encoding="utf8") as f:
         data = f.read()
 
     data = re.sub(r"//.*?$", "", data, flags=re.MULTILINE)  # remove single-line comments
@@ -15,12 +17,25 @@ def remove_annotations(file_path):
 
 if __name__ == '__main__':
 
-    for filename in os.listdir("../data/CVE"):
+    for filename in os.listdir("data/CVE"):
         if not filename.endswith(".sol"):
             continue
-        filepath = os.path.join("../data/CVE", filename)
+        filepath = f"data/CVE/{filename}"
         content = remove_annotations(filepath)
-        new_filepath = os.path.join("../data/CVE_clean", filename)
+        new_filepath = f"data/CVE_clean/{filename}"
+
+        with open(new_filepath, 'w') as f:
+            f.write(content)
+
+
+def mainfnc(data_dir):
+
+    for filename in os.listdir("data/CVE"):
+        if not filename.endswith(".sol"):
+            continue
+        filepath = f"data/CVE/{filename}"
+        content = remove_annotations(filepath)
+        new_filepath = f"{data_dir}/{filename}"
 
         with open(new_filepath, 'w') as f:
             f.write(content)

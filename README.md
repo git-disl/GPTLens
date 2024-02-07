@@ -15,14 +15,16 @@ git checkout release
 
 Get GPT-4 API from https://platform.openai.com/account/api-keys
 
-Replace OPENAI_API = "Enter your openai API key" in src/model.py (line 4) with your API key.
+Replace OPENAI_API_KEY = "Enter your openai API key" in src/model.py (line 4) with your API key.
 
 Set up Python environment by importing environment.yml as a Conda env.
 
 ### Step 1: Run Auditor
 
+Stay on GPTLens base folder
+
 ```sh
-python run_auditor.py --backend=gpt-4 --temperature=0.7 --topk=3 --num_auditor=1
+python src/run_auditor.py --backend=gpt-4 --temperature=0.7 --topk=3 --num_auditor=1
 ```
 
 | Parameter       | Description                                                     |
@@ -36,7 +38,7 @@ python run_auditor.py --backend=gpt-4 --temperature=0.7 --topk=3 --num_auditor=1
 ### Step 2: Run Critic
 
 ```sh
-python run_critic.py --backend=gpt-4 --temperature=0 --auditor_dir="auditor_gpt-4_0.7_top3_1" --num_critic=1 --shot=few
+python src/run_critic.py --backend=gpt-4 --temperature=0 --auditor_dir="auditor_gpt-4_0.7_top3_1" --num_critic=1 --shot=few
 ```
 | Parameter     | Description                                                     |
 |---------------|-----------------------------------------------------------------|
@@ -51,7 +53,7 @@ python run_critic.py --backend=gpt-4 --temperature=0 --auditor_dir="auditor_gpt-
 ### Step 3: Run Ranker
 
 ```sh
-python run_rank.py --auditor_dir="auditor_gpt-4_0.7_top3_1" --critic_dir="critic_gpt-4_0_1_few" --strategy="default"
+python src/run_rank.py --auditor_dir="auditor_gpt-4_0.7_top3_1" --critic_dir="critic_gpt-4_0_1_few" --strategy="default"
 ```
 | Parameter     | Description                                     |
 |---------------|-------------------------------------------------|
