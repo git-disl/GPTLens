@@ -1,0 +1,35 @@
+[
+    {
+        "function_name": "_transfer",
+        "vulnerability": "Integer Overflow and Underflow",
+        "criticism": "The criticism of the function not validating input values to prevent overflows and underflows is partially correct. The function does include checks to ensure that the balance is sufficient and that the transfer does not result in an overflow for the recipient's balance. However, the specific mention of overflow in the addition operation is misleading because the 'require' statement that checks if the recipient's new balance is greater than the old balance indirectly prevents overflow. Solidity's 'require' statements are effective in preventing such vulnerabilities if correctly implemented. The severity is overestimated because the function's checks mitigate the risk of overflow and underflow to a significant extent. The profitability of exploiting such a vulnerability, if it existed, would be high, but given the safeguards in place, the actual risk is low.",
+        "correctness": 5,
+        "severity": 3,
+        "profitability": 2,
+        "reason": "The function does not properly validate the input values to prevent overflows and underflows. Although there is a check to ensure that the balance after transfer is greater than before, it does not protect against overflow in the addition operation. This could allow attackers to exploit the contract by manipulating balances.",
+        "code": "function _transfer(address _from, address _to, uint _value) internal { require(_to != 0x0); require(balanceOf[_from] >= _value); require(balanceOf[_to] + _value > balanceOf[_to]); uint previousBalances = balanceOf[_from] + balanceOf[_to]; balanceOf[_from] -= _value; balanceOf[_to] += _value; emit Transfer(_from, _to, _value); assert(balanceOf[_from] + balanceOf[_to] == previousBalances); }",
+        "file_name": "2018-13074.sol"
+    },
+    {
+        "function_name": "mintToken",
+        "vulnerability": "Arbitrary Minting",
+        "criticism": "The criticism is valid in highlighting the potential for arbitrary minting by the contract owner, which could indeed lead to inflation or devaluation of the token. This design choice places a significant amount of trust in the contract owner and could be seen as a vulnerability if the intention was to create a decentralized system. However, the severity of this issue depends largely on the governance model of the contract and whether such control by the owner is within the expected use case. The profitability for the owner could be high if the minted tokens are sold or used to manipulate the market, but this does not constitute a vulnerability in the traditional sense where an external attacker benefits. Therefore, the profitability score is adjusted to reflect this.",
+        "correctness": 8,
+        "severity": 6,
+        "profitability": 3,
+        "reason": "This function allows the contract owner to mint an arbitrary amount of tokens to any account. There is no check on the amount being minted, potentially leading to inflation or devaluation of the token by creating tokens out of thin air and transferring them to any account, including the owner's.",
+        "code": "function mintToken(address target, uint256 mintedAmount) onlyOwner public { balanceOf[target] += mintedAmount; totalSupply += mintedAmount; emit Transfer(0, this, mintedAmount); emit Transfer(this, target, mintedAmount); }",
+        "file_name": "2018-13074.sol"
+    },
+    {
+        "function_name": "burnFrom",
+        "vulnerability": "Unchecked Burn Permissions",
+        "criticism": "The reasoning provided is incorrect. The function does check if the caller is allowed to initiate the burn through the 'require' statement that ensures the value to be burned is less than or equal to the allowance the '_from' account has given to the caller. This mechanism is designed to prevent unauthorized burning of tokens. The criticism fails to recognize the role of allowances in ERC-20 token contracts, which are a standard way to manage permissions for token operations like burning. Therefore, the identified 'vulnerability' is not a vulnerability but rather a misunderstanding of how ERC-20 token allowances work. The severity and profitability of exploiting such a non-existent vulnerability are both non-applicable.",
+        "correctness": 1,
+        "severity": 0,
+        "profitability": 0,
+        "reason": "The function burns tokens from a user's account with the caller's permission but does not check if the caller is allowed to initiate the burn. This could potentially allow an attacker to burn tokens from another's account without explicit permission, reducing the victim's balance unfairly.",
+        "code": "function burnFrom(address _from, uint256 _value) public returns (bool success) { require(balanceOf[_from] >= _value); require(_value <= allowance[_from][msg.sender]); balanceOf[_from] -= _value; allowance[_from][msg.sender] -= _value; totalSupply -= _value; emit Burn(_from, _value); return true; }",
+        "file_name": "2018-13074.sol"
+    }
+]

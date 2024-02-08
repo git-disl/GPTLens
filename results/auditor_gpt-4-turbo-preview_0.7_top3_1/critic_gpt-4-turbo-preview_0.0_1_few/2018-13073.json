@@ -1,0 +1,35 @@
+[
+    {
+        "function_name": "transfer",
+        "vulnerability": "reentrancy",
+        "criticism": "The criticism of reentrancy vulnerability in the 'transfer' function is misplaced. The function does not make an external call to an untrusted contract but merely emits an event. Reentrancy attacks are primarily a concern when a contract interacts with external contracts in a way that allows control to be handed over to an untrusted contract before all internal state changes are completed. Since the 'Transfer' event does not allow for external code execution, it does not pose a reentrancy risk. Therefore, the reasoning is incorrect, and the severity and profitability of this supposed vulnerability are overestimated.",
+        "correctness": 1,
+        "severity": 0,
+        "profitability": 0,
+        "reason": "This function directly modifies the state without considering the potential for a reentrant attack. A malicious contract could take advantage of the call to 'Transfer' event to re-enter and drain funds in an unexpected manner.",
+        "code": "function transfer(address _to, uint256 _value) { if (balanceOf[msg.sender] < _value) throw; if (balanceOf[_to] + _value < balanceOf[_to]) throw; if (frozenAccount[msg.sender]) throw; balanceOf[msg.sender] -= _value; balanceOf[_to] += _value; Transfer(msg.sender, _to, _value); }",
+        "file_name": "2018-13073.sol"
+    },
+    {
+        "function_name": "sell",
+        "vulnerability": "DoS with (unexpected) revert",
+        "criticism": "The reasoning correctly identifies a potential denial of service (DoS) vulnerability due to the use of 'throw' for error handling in the 'sell' function. Using 'throw' reverts all state changes and consumes all gas when a transaction fails, which can indeed be exploited by an attacker to cause a DoS by intentionally failing the 'send' operation. However, the criticism should also note that modern Solidity practices recommend using 'require' for error handling to avoid such issues. The severity is moderate because it can disrupt the contract's functionality, but the profitability is low as it does not directly result in financial gain for the attacker.",
+        "correctness": 7,
+        "severity": 5,
+        "profitability": 1,
+        "reason": "This function uses 'throw' for error handling, which will revert all state changes and consume all provided gas. An attacker can intentionally fail the 'send' function to cause the transaction to fail, leading to a denial of service.",
+        "code": "function sell(uint256 amount) { if (balanceOf[msg.sender] < amount ) throw; balanceOf[this] += amount; balanceOf[msg.sender] -= amount; if (!msg.sender.send(amount * sellPrice)) { throw; } else { Transfer(msg.sender, this, amount); } }",
+        "file_name": "2018-13073.sol"
+    },
+    {
+        "function_name": "transferFrom",
+        "vulnerability": "Integer overflow",
+        "criticism": "The criticism regarding the integer overflow vulnerability due to the check 'if (balanceOf[_to] + _value < balanceOf[_to])' is partially correct. This check is indeed intended to prevent overflow, and while Solidity's unsigned integers are prone to overflow, the condition described is actually a safeguard against it. The reasoning seems to misunderstand the nature of the check, which is correctly implemented to catch overflows. However, the overall concern for integer overflow is valid in the context of Solidity contracts. The correctness of identifying an overflow risk is appreciated, but the specific criticism of the check is misplaced. The severity of potential overflow issues is high due to the unpredictable behavior they can cause, but the profitability depends on the specific context and whether an attacker can exploit such a vulnerability for gain.",
+        "correctness": 5,
+        "severity": 7,
+        "profitability": 4,
+        "reason": "The check 'if (balanceOf[_to] + _value < balanceOf[_to])' is intended to prevent overflow, but it could be bypassed or incorrectly trigger due to the arithmetic properties of unsigned integers in Solidity, leading to unintended behavior.",
+        "code": "function transferFrom(address _from, address _to, uint256 _value) returns (bool success) { if (frozenAccount[_from]) throw; if (balanceOf[_from] < _value) throw; if (balanceOf[_to] + _value < balanceOf[_to]) throw; if (_value > allowance[_from][msg.sender]) throw; balanceOf[_from] -= _value; balanceOf[_to] += _value; allowance[_from][msg.sender] -= _value; Transfer(_from, _to, _value); return true; }",
+        "file_name": "2018-13073.sol"
+    }
+]

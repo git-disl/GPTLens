@@ -1,0 +1,23 @@
+[
+    {
+        "function_name": "mintToken",
+        "code": "function mintToken(address target, uint256 mintedAmount) onlyOwner { balanceOf[target] += mintedAmount; Transfer(0, owner, mintedAmount); Transfer(owner, target, mintedAmount); }",
+        "vulnerability": "Arbitrary minting",
+        "reason": "The 'mintToken' function allows the contract owner to mint an arbitrary amount of tokens to any address. This can lead to inflation, diluting the value of existing tokens.",
+        "file_name": "2018-13072.sol"
+    },
+    {
+        "function_name": "buy",
+        "code": "function buy() payable { if(isSelling == false) revert(); uint amount = msg.value * buyRate; balanceOf[msg.sender] += amount; balanceOf[owner] -= amount; Transfer(owner, msg.sender, amount); }",
+        "vulnerability": "Unchecked token transfer",
+        "reason": "The 'buy' function calculates the amount of tokens to transfer based on the sent Ether and a fixed rate but does not check if the owner has enough tokens to sell, potentially leading to an underflow in the owner's balance.",
+        "file_name": "2018-13072.sol"
+    },
+    {
+        "function_name": "transfer",
+        "code": "function transfer(address _to, uint256 _value) { if (balanceOf[msg.sender] < _value) revert(); if (balanceOf[_to] + _value < balanceOf[_to]) revert(); if (frozenAccount[msg.sender]) revert(); balanceOf[msg.sender] -= _value; balanceOf[_to] += _value; Transfer(msg.sender, _to, _value); }",
+        "vulnerability": "Reentrancy",
+        "reason": "Though not directly exploitable for reentrancy in this context as the function does not call an untrusted contract, the pattern of making state changes after calling an external contract (Transfer event in this case) could be risky if the code evolves or is reused without considering reentrancy attacks.",
+        "file_name": "2018-13072.sol"
+    }
+]
