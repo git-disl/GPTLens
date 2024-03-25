@@ -1,0 +1,23 @@
+[
+    {
+        "function_name": "transfer",
+        "code": "function transfer(address _to, uint256 _value) { if (balanceOf[msg.sender] < _value) throw; if (balanceOf[_to] + _value < balanceOf[_to]) throw; if (frozenAccount[msg.sender]) throw; balanceOf[msg.sender] -= _value; balanceOf[_to] += _value; Transfer(msg.sender, _to, _value); }",
+        "vulnerability": "reentrancy",
+        "reason": "This function directly modifies the state without considering the potential for a reentrant attack. A malicious contract could take advantage of the call to 'Transfer' event to re-enter and drain funds in an unexpected manner.",
+        "file_name": "2018-13073.sol"
+    },
+    {
+        "function_name": "sell",
+        "code": "function sell(uint256 amount) { if (balanceOf[msg.sender] < amount ) throw; balanceOf[this] += amount; balanceOf[msg.sender] -= amount; if (!msg.sender.send(amount * sellPrice)) { throw; } else { Transfer(msg.sender, this, amount); } }",
+        "vulnerability": "DoS with (unexpected) revert",
+        "reason": "This function uses 'throw' for error handling, which will revert all state changes and consume all provided gas. An attacker can intentionally fail the 'send' function to cause the transaction to fail, leading to a denial of service.",
+        "file_name": "2018-13073.sol"
+    },
+    {
+        "function_name": "transferFrom",
+        "code": "function transferFrom(address _from, address _to, uint256 _value) returns (bool success) { if (frozenAccount[_from]) throw; if (balanceOf[_from] < _value) throw; if (balanceOf[_to] + _value < balanceOf[_to]) throw; if (_value > allowance[_from][msg.sender]) throw; balanceOf[_from] -= _value; balanceOf[_to] += _value; allowance[_from][msg.sender] -= _value; Transfer(_from, _to, _value); return true; }",
+        "vulnerability": "Integer overflow",
+        "reason": "The check 'if (balanceOf[_to] + _value < balanceOf[_to])' is intended to prevent overflow, but it could be bypassed or incorrectly trigger due to the arithmetic properties of unsigned integers in Solidity, leading to unintended behavior.",
+        "file_name": "2018-13073.sol"
+    }
+]

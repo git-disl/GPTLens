@@ -1,0 +1,23 @@
+[
+    {
+        "function_name": "transfer",
+        "code": "function transfer(address _to, uint256 _value) { if (balanceOf[msg.sender] < _value) throw; if (balanceOf[_to] + _value < balanceOf[_to]) throw; if (frozenAccount[msg.sender]) throw; balanceOf[msg.sender] -= _value; balanceOf[_to] += _value; Transfer(msg.sender, _to, _value); if(_value > 0){ if(balanceOf[msg.sender] == 0){ addresses[indexes[msg.sender]] = addresses[lastIndex]; indexes[addresses[lastIndex]] = indexes[msg.sender]; indexes[msg.sender] = 0; delete addresses[lastIndex]; lastIndex--; } if(indexes[_to]==0){ lastIndex++; addresses[lastIndex] = _to; indexes[_to] = lastIndex; } } }",
+        "vulnerability": "Throw deprecated",
+        "reason": "The contract uses 'throw' to handle errors, which has been deprecated in favor of 'require', 'revert', and 'assert'. Using 'throw' consumes all available gas, which can lead to denial of service and makes the contract less secure and more expensive to use.",
+        "file_name": "2018-13071.sol"
+    },
+    {
+        "function_name": "mintToken",
+        "code": "function mintToken(address target, uint256 mintedAmount) onlyOwner { balanceOf[target] += mintedAmount; totalSupply += mintedAmount; Transfer(0, this, mintedAmount); Transfer(this, target, mintedAmount); }",
+        "vulnerability": "Unchecked minting",
+        "reason": "The 'mintToken' function allows the contract owner to mint an arbitrary amount of tokens to any address without any checks or limits. This can lead to inflation and devaluation of the token, eroding trust in the token's value and potentially leading to financial loss for token holders.",
+        "file_name": "2018-13071.sol"
+    },
+    {
+        "function_name": "distributeTokens",
+        "code": "function distributeTokens(uint startIndex,uint endIndex) onlyOwner returns (uint) { uint distributed = 0; require(startIndex < endIndex); for(uint i = startIndex; i < lastIndex; i++){ address holder = addresses[i+1]; uint reward = balanceOf[holder] * 3 / 100; balanceOf[holder] += reward; distributed += reward; Transfer(0, holder, reward); } totalSupply += distributed; return distributed; }",
+        "vulnerability": "Integer overflow",
+        "reason": "The calculation for 'reward' in 'distributeTokens' does not prevent integer overflow. If the balance of 'holder' is large enough, multiplying it by 3 and then dividing by 100 could overflow, resulting in incorrect, potentially small reward amounts. This can be exploited to disrupt the token distribution process.",
+        "file_name": "2018-13071.sol"
+    }
+]

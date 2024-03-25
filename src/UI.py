@@ -12,26 +12,6 @@ from streamlit_js_eval import streamlit_js_eval
 
 os.environ['DISPLAY'] = ':0'
 
-with st.sidebar:
-    openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
-    "[Get an OpenAI API key](https://platform.openai.com/account/api-keys)"
-    "[View the source code](https://github.com/streamlit/llm-examples/blob/main/Chatbot.py)"
-    "[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/streamlit/llm-examples?quickstart=1)"
-    st.divider()
-    if st.button("Reset App"):
-        streamlit_js_eval(js_expressions="parent.window.location.reload()")
-
-
-st.title("💬 GPTLens")
-st.caption("🚀 Smart Contract Vulnerability Detection powered by OpenAI LLM")
-
-if not openai_api_key:
-    st.warning("Please add your OpenAI API key to continue.")
-    st.stop()
-else:
-    os.environ["OPENAI_API_KEY"] = openai_api_key
-
-
 # Store the initial value of widgets in session state
 if "visibility" not in st.session_state:
     st.session_state.visibility = "visible"
@@ -63,6 +43,46 @@ if "args_c" not in st.session_state:
 
 if "args_r" not in st.session_state:
     st.session_state.args_r = None
+
+def start_auditor():
+    st.session_state.start_auditor = True
+def end_auditor():
+    st.session_state.start_auditor = False
+
+def start_critic():
+    st.session_state.start_critic = True
+def end_critic():
+    st.session_state.start_critic = False
+
+def start_ranking():
+    st.session_state.start_ranking = True
+def end_ranking():
+    st.session_state.start_ranking = False
+
+
+
+with st.sidebar:
+    openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
+    "[Get an OpenAI API key](https://platform.openai.com/account/api-keys)"
+    "[View the source code](https://github.com/sciencepal/GPTLens/blob/aditya-test/src/UI.py)"
+    "[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/sciencepal/GPTLens?quickstart=1)"
+    st.divider()
+    if st.button("Reset App"):
+        st.session_state.section_active_critic = False
+        st.session_state.section_active_ranking = False
+        end_critic()
+        end_ranking()
+        # streamlit_js_eval(js_expressions="parent.window.location.reload()")
+
+
+st.title("💬 GPTLens")
+st.caption("🚀 Smart Contract Vulnerability Detection powered by OpenAI LLM")
+
+if not openai_api_key:
+    st.warning("Please add your OpenAI API key to continue.")
+    st.stop()
+else:
+    os.environ["OPENAI_API_KEY"] = openai_api_key
 
 
 if st.session_state.section_active_auditor:
@@ -112,10 +132,6 @@ if st.session_state.section_active_auditor:
 
         uploaded_prompt = st.file_uploader('Upload prompt file (optional)', accept_multiple_files=False, type=['py'])
 
-    def start_auditor():
-        st.session_state.start_auditor = True
-    def end_auditor():
-        st.session_state.start_auditor = False
 
     audit_button = st.button("Start Auditor", key="auditor", on_click=start_auditor)
 
@@ -215,10 +231,6 @@ if st.session_state.section_active_critic:
 
     os.environ["OPENAI_API_KEY"] = openai_api_key
 
-    def start_critic():
-        st.session_state.start_critic = True
-    def end_critic():
-        st.session_state.start_critic = False
 
     critic_button = st.button("Start Critics", key="critic", on_click=start_critic)
 
@@ -276,10 +288,6 @@ if st.session_state.section_active_ranking:
             index=0
         )
 
-    def start_ranking():
-        st.session_state.start_ranking = True
-    def end_ranking():
-        st.session_state.start_ranking = False
 
     rank_button = st.button("Start Ranking", key="ranking", on_click=start_ranking)
 

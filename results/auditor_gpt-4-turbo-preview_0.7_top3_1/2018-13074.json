@@ -1,0 +1,23 @@
+[
+    {
+        "function_name": "_transfer",
+        "code": "function _transfer(address _from, address _to, uint _value) internal { require(_to != 0x0); require(balanceOf[_from] >= _value); require(balanceOf[_to] + _value > balanceOf[_to]); uint previousBalances = balanceOf[_from] + balanceOf[_to]; balanceOf[_from] -= _value; balanceOf[_to] += _value; emit Transfer(_from, _to, _value); assert(balanceOf[_from] + balanceOf[_to] == previousBalances); }",
+        "vulnerability": "Integer Overflow and Underflow",
+        "reason": "The function does not properly validate the input values to prevent overflows and underflows. Although there is a check to ensure that the balance after transfer is greater than before, it does not protect against overflow in the addition operation. This could allow attackers to exploit the contract by manipulating balances.",
+        "file_name": "2018-13074.sol"
+    },
+    {
+        "function_name": "mintToken",
+        "code": "function mintToken(address target, uint256 mintedAmount) onlyOwner public { balanceOf[target] += mintedAmount; totalSupply += mintedAmount; emit Transfer(0, this, mintedAmount); emit Transfer(this, target, mintedAmount); }",
+        "vulnerability": "Arbitrary Minting",
+        "reason": "This function allows the contract owner to mint an arbitrary amount of tokens to any account. There is no check on the amount being minted, potentially leading to inflation or devaluation of the token by creating tokens out of thin air and transferring them to any account, including the owner's.",
+        "file_name": "2018-13074.sol"
+    },
+    {
+        "function_name": "burnFrom",
+        "code": "function burnFrom(address _from, uint256 _value) public returns (bool success) { require(balanceOf[_from] >= _value); require(_value <= allowance[_from][msg.sender]); balanceOf[_from] -= _value; allowance[_from][msg.sender] -= _value; totalSupply -= _value; emit Burn(_from, _value); return true; }",
+        "vulnerability": "Unchecked Burn Permissions",
+        "reason": "The function burns tokens from a user's account with the caller's permission but does not check if the caller is allowed to initiate the burn. This could potentially allow an attacker to burn tokens from another's account without explicit permission, reducing the victim's balance unfairly.",
+        "file_name": "2018-13074.sol"
+    }
+]
