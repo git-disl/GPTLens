@@ -73,14 +73,14 @@ def start_ranking():
 def end_ranking():
     st.session_state.start_ranking = False
 
-
+openai_api_key = "xyz"
 
 with st.sidebar:
-    openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
-    "[Get an OpenAI API key (not needed for demo)](https://platform.openai.com/account/api-keys)"
-    "[View the source code](https://github.com/sciencepal/GPTLens/blob/aditya-test/src/UI.py)"
-    "[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/sciencepal/GPTLens?quickstart=1)"
-    st.divider()
+    # openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
+    # "[Get an OpenAI API key (not needed for demo)](https://platform.openai.com/account/api-keys)"
+    # "[View the source code](https://github.com/sciencepal/GPTLens/blob/aditya-test/src/UI.py)"
+    # "[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/sciencepal/GPTLens?quickstart=1)"
+    # st.divider()
     if st.button("Reset App"):
         st.session_state.section_active_critic = False
         st.session_state.section_active_ranking = False
