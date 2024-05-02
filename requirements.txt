@@ -8,3 +8,4 @@ STqdm
 # pyautogui
 # python-xlib
 streamlit_js_eval
+streamlit-pdf-viewer

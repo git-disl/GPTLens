@@ -9,6 +9,9 @@ import time
 import pre_process
 from utils import dotdict, clean_folder
 from streamlit_js_eval import streamlit_js_eval
+from streamlit_pdf_viewer import pdf_viewer
+import base64
+from pathlib import Path
 
 os.environ['DISPLAY'] = ':0'
 
@@ -86,11 +89,20 @@ with st.sidebar:
         end_critic()
         end_ranking()
         end_auditor()
+    bin_file = "src/CS8903_Aditya_PAL_GPTLens_Demo.pdf"
+    with open(bin_file, 'rb') as f:
+        data = f.read()
+    st.download_button(label="Download GPTLens Demo PPT", data=data, file_name=bin_file, mime='application/pdf',)
+
+
+    # st.link_button("Demo of GPTLens", "file:///CS8903_Aditya_PAL_GPTLens_Demo.pdf")
+    # return href
         # streamlit_js_eval(js_expressions="parent.window.location.reload()")
 
 
 st.title("💬 GPTLens Demo")
 st.caption("🚀 Smart Contract Vulnerability Detection powered by OpenAI LLM")
+
 
 if not openai_api_key:
     st.warning("In GPTlens, you must enter OpenAI API key to continue. Not needed for this demo")
