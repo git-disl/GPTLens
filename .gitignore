@@ -4,7 +4,7 @@ data/CVE_label/extract.py
 data/CVE_label/raw_data.txt
 src/__pycache__
 .conda
-GPTLens
+# GPTLens
 data_sample/CVE_label/extract.py
 data_sample/CVE_label/raw_data.txt
 data_full/CVE_label/extract.py
