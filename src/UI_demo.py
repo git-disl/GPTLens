@@ -81,13 +81,13 @@ with st.sidebar:
     # "[View the source code](https://github.com/sciencepal/GPTLens/blob/aditya-test/src/UI.py)"
     # "[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/sciencepal/GPTLens?quickstart=1)"
     # st.divider()
-    if st.button("Reset App"):
-        st.session_state.section_active_critic = False
-        st.session_state.section_active_ranking = False
-        st.session_state.section_active_auditor = False
-        end_critic()
-        end_ranking()
-        end_auditor()
+    # if st.button("Reset App"):
+    #     st.session_state.section_active_critic = False
+    #     st.session_state.section_active_ranking = False
+    #     st.session_state.section_active_auditor = False
+    #     end_critic()
+    #     end_ranking()
+    #     end_auditor()
     bin_file = "src/CS8903_Aditya_PAL_GPTLens_Demo.pdf"
     with open(bin_file, 'rb') as f:
         data = f.read()
