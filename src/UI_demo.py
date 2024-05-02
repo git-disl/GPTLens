@@ -9,7 +9,6 @@ import time
 import pre_process
 from utils import dotdict, clean_folder
 from streamlit_js_eval import streamlit_js_eval
-from streamlit_pdf_viewer import pdf_viewer
 import base64
 from pathlib import Path
 
