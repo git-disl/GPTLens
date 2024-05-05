@@ -9,6 +9,8 @@ import time
 import pre_process
 from utils import dotdict, clean_folder
 from streamlit_js_eval import streamlit_js_eval
+import base64
+from pathlib import Path
 
 os.environ['DISPLAY'] = ':0'
 
@@ -71,26 +73,35 @@ def start_ranking():
 def end_ranking():
     st.session_state.start_ranking = False
 
-
+openai_api_key = "xyz"
 
 with st.sidebar:
-    openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
-    "[Get an OpenAI API key (not needed for demo)](https://platform.openai.com/account/api-keys)"
-    "[View the source code](https://github.com/sciencepal/GPTLens/blob/aditya-test/src/UI.py)"
-    "[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/sciencepal/GPTLens?quickstart=1)"
-    st.divider()
-    if st.button("Reset App"):
-        st.session_state.section_active_critic = False
-        st.session_state.section_active_ranking = False
-        st.session_state.section_active_auditor = False
-        end_critic()
-        end_ranking()
-        end_auditor()
+    # openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
+    # "[Get an OpenAI API key (not needed for demo)](https://platform.openai.com/account/api-keys)"
+    # "[View the source code](https://github.com/sciencepal/GPTLens/blob/aditya-test/src/UI.py)"
+    # "[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/sciencepal/GPTLens?quickstart=1)"
+    # st.divider()
+    # if st.button("Reset App"):
+    #     st.session_state.section_active_critic = False
+    #     st.session_state.section_active_ranking = False
+    #     st.session_state.section_active_auditor = False
+    #     end_critic()
+    #     end_ranking()
+    #     end_auditor()
+    bin_file = "src/CS8903_Aditya_PAL_GPTLens_Demo.pdf"
+    with open(bin_file, 'rb') as f:
+        data = f.read()
+    st.download_button(label="Download GPTLens Demo PPT", data=data, file_name=bin_file, mime='application/pdf',)
+
+
+    # st.link_button("Demo of GPTLens", "file:///CS8903_Aditya_PAL_GPTLens_Demo.pdf")
+    # return href
         # streamlit_js_eval(js_expressions="parent.window.location.reload()")
 
 
 st.title("💬 GPTLens Demo")
 st.caption("🚀 Smart Contract Vulnerability Detection powered by OpenAI LLM")
+
 
 if not openai_api_key:
     st.warning("In GPTlens, you must enter OpenAI API key to continue. Not needed for this demo")
