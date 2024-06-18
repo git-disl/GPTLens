@@ -1,0 +1,54 @@
+Metadata-Version: 2.1
+Name: streamlit-js-eval
+Version: 0.1.7
+Summary: A custom Streamlit component to evaluate arbitrary Javascript expressions.
+Home-page: https://github.com/aghasemi/streamlit_js_eval
+Author: Alireza Ghasemi
+Author-email: ghasemi.a.ir@gmail.com
+License: UNKNOWN
+Keywords: Python,Streamlit,JavaScript
+Platform: UNKNOWN
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: streamlit (>=1.0.0)
+
+# Streamlit-JS-Eval
+
+[![PyPI version](https://badge.fury.io/py/streamlit_js_eval.svg?service=github)](https://badge.fury.io/py/streamlit_js_eval) [![Downloads](https://static.pepy.tech/badge/streamlit-js-eval?service=github)](https://static.pepy.tech/badge/streamlit-js-eval)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)]([https://share.streamlit.io/streamlit/corp/main](https://aghasemi-streamlit-js-eval-example-yleu91.streamlitapp.com/))
+
+
+SJE is a custom Streamlit component, built to evaluate arbitrary Javascript expressions and return the result. It can become useful in doing certain functionalities which are _simple_ things in JavaScript, but unavailable or difficult to do in Streamlit. Examples include cookie management, writing to clipboard, getting device width (e.g. to check if we are on a mobile device), getting browser language, sharing something through Android's share feature, knowing user agent, etc. See [MDN docs](https://developer.mozilla.org/en-US/docs/Web/API) for more information about Web APIs. 
+
+## Install
+
+```python
+pip3 install streamlit_js_eval
+```
+
+## Example
+
+```python
+st.write(f"Screen width is {streamlit_js_eval(js_expressions='screen.width', key = 'SCR')}")
+```
+`key` is an arbitrary but unique string, required by Streamlit components API for each call to `streamlit_js_eval`.
+
+### Common JavaScript functionalities
+
+Some more common functionalities are already implemented as Python functions. Examples include:
+
+```python
+# Returns user's location after asking for permission when the user clicks the generated link with the given text
+location = get_geolocation()
+# The URL parts of the page
+location_json = get_page_location()
+```
+
+See `streamlit_js_eval/__init__.py` for more functions. Check a demo in `example.py` or [see it live](https://aghasemi-streamlit-js-eval-example-yleu91.streamlitapp.com/).
+
+## Known Limitations
+
+- It seems calling SJE from inside a branch in Streamlit code does not work (e.g. in a loop, `if-else` block, ...)
+
+
